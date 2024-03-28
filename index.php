@@ -15,7 +15,7 @@ require ('vendor/autoload.php'); ?>
     <form action="createTable.php" method="post">
         <label for="table_name">Nombre de la tabla:</label>
         <input type="text" id="table_name" name="table_name" required>
-        <button type="submit">Crear Tabla !</button>
+        <button type="submit">Crear Tabla</button>
     </form>
 
     <h2>Eliminar Tabla</h2>
