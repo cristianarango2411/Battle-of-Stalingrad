@@ -9,11 +9,12 @@ class RedisConnection {
     private $redis;
 
     public function __construct() {
+        
         $this->redis = new Client([
-            'scheme' => 'tcp',
-            'host' => 'redis-17397.c280.us-central1-2.gce.cloud.redislabs.com', 
-            'port' => 17397, // The default port of Redis
-            'password' => 'STFa6JLfkUu4JksIb53lRxdqwIkPo3Y4', 
+            'scheme' => getenv('REDIS_SCHEME'),
+            'host' => getenv('REDIS_HOST'), 
+            'port' => getenv('REDIS_PORT'),
+            'password' => getenv('REDIS_PASSWORD'), 
         ]);
     }
 
@@ -55,7 +56,3 @@ class RedisConnection {
         }
     }
 }
-?>
-
-
-        

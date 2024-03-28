@@ -14,8 +14,3 @@ $redisConnection->deleteTable($table_name);
 
 //header("Location: index.php");
 //exit();
-?>
-?>
-
-
-

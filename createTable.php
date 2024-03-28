@@ -6,17 +6,15 @@ use Battle\Model\RedisConnection;
 
 $table_name = $_POST['table_name'];
 
-echo "\n Nombre de la tabla: ".$table_name;
+echo "<br> Nombre de la tabla: ".$table_name;
 
 $redisConnection = new RedisConnection();
 
-echo "\n Conecto ";
+echo "<br> Conecto ";
 // Guardar la tabla en Redis
 $redisConnection->createTable($table_name);
 
 //header("Location: index.php");
 //exit();
-?>
-
 
 
