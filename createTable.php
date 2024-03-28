@@ -1,0 +1,22 @@
+<?php declare( strict_types = 1 );
+
+require ('vendor/autoload.php');
+
+use Battle\Model\RedisConnection;
+
+$table_name = $_POST['table_name'];
+
+echo "\n Nombre de la tabla: ".$table_name;
+
+$redisConnection = new RedisConnection();
+
+echo "\n Conecto ";
+// Guardar la tabla en Redis
+$redisConnection->createTable($table_name);
+
+//header("Location: index.php");
+//exit();
+?>
+
+
+

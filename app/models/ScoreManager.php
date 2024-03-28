@@ -1,6 +1,6 @@
 <?php
 namespace Battle;
-use Predis\Client;
+
 
 class ScoreManager
  {
@@ -8,18 +8,9 @@ class ScoreManager
     public $redis;
     
 
-    public function __construct()
+    public function __construct($score)
     {
-        //$this->scores = $scores;
-        //connection with redis
-        $this->redis = new Client([
-            'scheme' => 'tcp',
-            'host' => 'redis-17397.c280.us-central1-2.gce.cloud.redislabs.com', 
-            'port' => 6379, // The default port of Redis
-            'password' => 'STFa6JLfkUu4JksIb53lRxdqwIkPo3Y4', 
-        ]);
-        
-
+        $this->scores = $scores;
         
     }
 

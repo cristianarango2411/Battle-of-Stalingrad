@@ -4,7 +4,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Battle\\": "classes/"
+            "Battle\\": "app/",
+            "Battle\\Model\\": "app/models/"
         }
     }
 }
