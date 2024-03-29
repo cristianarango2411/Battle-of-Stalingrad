@@ -2,7 +2,7 @@
 
 require ('vendor/autoload.php');
 
-use Battle\RedisConnection  ;
+use Battle\Model\RedisConnection  ;
 
 $redis = new RedisConnection();
 

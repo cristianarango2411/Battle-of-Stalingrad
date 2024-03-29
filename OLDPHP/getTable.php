@@ -8,7 +8,7 @@ $table_name = $_POST['table_name_get'];
 
 $redisConnection = new RedisConnection();
 
-// Guardar la tabla en Redis
+// obtenemos la tabla de Redis
 $tableContent=$redisConnection->getTable($table_name);
 
 echo "<br> tabla contenido: ";

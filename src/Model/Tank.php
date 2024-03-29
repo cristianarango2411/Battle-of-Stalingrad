@@ -1,6 +1,9 @@
 <?php
 
+namespace Battle;
+
 class Tank {
+    public $id;
     public $name;
     public $health;
     public $attack;
@@ -17,9 +20,10 @@ class Tank {
 
 
 
-    public function __construct($name, $health, $attack, $defense, $speed, $fuelRange, $turretRange, $viewport, $barrel, $turretRing, $commanderHatch, $wheels, $x, $y) {
+    public function __construct($id, $name, $health, $attack, $defense, $speed, $fuelRange, $turretRange, $viewport, $barrel, $turretRing, $commanderHatch, $wheels, $x, $y) {
         $this->attack = $attack;
         $this->defense = $defense;
+        $this->id = $id;
         $this->name = $name;
         $this->health = $health;
         $this ->speed = $speed;

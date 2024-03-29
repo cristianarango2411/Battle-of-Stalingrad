@@ -1,28 +1,53 @@
 <?php
 namespace Battle;
 
+Use Battle\Model\RedisConnection;
+use Battle\Tank;
+
+require_once 'v_tank.php';
+
+
+$tank = new Tank($id, $name, $health, $attack, $defense, $speed, $fuelRange, $turretRange, $viewport, $barrel, $turretRing, $commanderHatch, $wheels, $x, $y);
 
 class ScoreManager
  {
     private $scores;
     public $redis;
-    
 
-    public function __construct($score)
+    public function __construct($scores)
     {
         $this->scores = $scores;
         
     }
 
-    
-    
-
+    //controller to load tank from database
     public function loadTank($tank_id) {
-        // Lógica para cargar datos del tanque desde la base de datos
+
+        $table_tank = $_POST['table_tank_get'];//nombramos la tabla
+
+        $redisConnection = new RedisConnection();
+
+        // Obtenemos la tabla
+        $tableTank=$redisConnection->getTable($table_tank);
+
+        var_dump($tableTank);
+        
+
     }
 
+
+
+
     public function loadMap($map_id) {
-        // Lógica para cargar datos del mapa desde la base de datos
+        $table_map = $_POST['table_map_get'];//nombramos la tabla
+
+        $redisConnection = new RedisConnection();
+
+        // Obtenemos la tabla
+        $tableMap=$redisConnection->getTable($table_map);
+
+        var_dump($tableMap);
+
     }
 
     public function simulatebattle($tanks, $mapid) {
