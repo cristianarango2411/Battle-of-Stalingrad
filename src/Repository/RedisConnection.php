@@ -1,5 +1,5 @@
 <?php
-namespace Battle\Model;
+namespace Battle\Repository;
 
 use Exception;
 use Predis\Client;
