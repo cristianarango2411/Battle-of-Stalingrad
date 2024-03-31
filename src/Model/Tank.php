@@ -1,6 +1,6 @@
 <?php
-
-namespace Battle;
+declare( strict_types = 1 );
+namespace Battle\Model;
 
 class Tank {
     public $id;
@@ -12,29 +12,17 @@ class Tank {
     public $fuelRange;
     public $position;
     public $turretRange;
-    public $viewport;
-    public $barrel;
-    public $turretRing;
-    public $commanderHatch;
-    public $wheels;
 
 
-
-    public function __construct($id, $name, $health, $attack, $defense, $speed, $fuelRange, $turretRange, $viewport, $barrel, $turretRing, $commanderHatch, $wheels, $x, $y) {
+    public function __construct($id, $name, $health, $attack, $defense, $speed, $fuelRange, $turretRange) {
         $this->attack = $attack;
         $this->defense = $defense;
         $this->id = $id;
         $this->name = $name;
         $this->health = $health;
-        $this ->speed = $speed;
-        $this ->fuelRange = $fuelRange;
-        $this ->turretRange = $turretRange;
-        $this ->viewport = $viewport;
-        $this ->barrel = $barrel;
-        $this ->turretRing = $turretRing;
-        $this ->commanderHatch = $commanderHatch;
-        $this ->wheels = $wheels;
-        $this->position = ['x' => $x, 'y' => $y];
+        $this->speed = $speed;
+        $this->fuelRange = $fuelRange;
+        $this->turretRange = $turretRange;
     }
 
     public function attack(Tank $target)
@@ -49,6 +37,9 @@ class Tank {
         $this->position['y'] = $y;
     }
 
+    public function getId() { return $this->id; }
+
+    public function setId($id) { $this->id = $id; }
 
     public function getName() {
         return $this->name;
@@ -89,51 +80,23 @@ class Tank {
         $this->turretRange = $turretRange;
     }
 
-    public function getviewport() {
-        return $this->viewport;
-    }
-
-    public function setviewport($viewport) {
-        $this->viewport = $viewport;
-    }
-
-    public function getbarrel() {
-        return $this->barrel;
-    }
-
-    public function setbarrel($barrel) {
-        $this->barrel = $barrel;
-    }
-
-    public function getturretRing() {
-        return $this->turretRing;
-    }
-
-    public function setturretRing($turretRing) {
-        $this->turretRing = $turretRing;
-    }
-
-    public function getcommanderHatch() {
-        return $this->commanderHatch;
-    }
-
-    public function setcommanderHatch($commanderHatch) {
-        $this->commanderHatch = $commanderHatch;
-    }
-
-    public function getwheels() {
-        return $this->wheels;
-    }
-
-    public function setwheels($wheels) {
-        $this->wheels = $wheels;
-    }
-
     public function getPosition()
     {
         return $this->position;
     }
 
+    public function jsonSerialize() {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'health' => $this->health,
+            'speed' => $this->speed,
+            'fuelRange' => $this->fuelRange,
+            'turretRange' => $this->turretRange,
+            'attack' => $this->attack,
+            'defense' => $this->defense,
+        ];
+    }
+
 
 }
-?>

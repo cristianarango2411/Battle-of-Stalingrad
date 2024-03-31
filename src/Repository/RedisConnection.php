@@ -1,11 +1,12 @@
-<?php
+<?php 
+declare(strict_types=1);
 namespace Battle\Repository;
 
 use Exception;
 use Predis\Client;
 use stdClass;
 
-class RedisConnection {
+class RedisConnection implements ConnectionInterface{
     private $redis;
 
     public function __construct() {
@@ -23,36 +24,62 @@ class RedisConnection {
     }
 
 
-    public function createTable($table_name) {
+    public function createTable($tableName) {
         
-        if ($this->redis->exists($table_name)) {
-            throw new Exception("La tabla $table_name ya existe en Redis.");
+        if ($this->redis->exists($tableName)) {
+            throw new Exception("La tabla $tableName ya existe en Redis.");
         } else {
             // Save the table in Redis
             $object = new stdClass();
             $object->prueba="completada";
-            $this->redis->set( $table_name, json_encode( $object ) );
+            $this->redis->set( $tableName, json_encode( $object ) );
             echo "todo bien";
-            $contenido=$this->redis->get($table_name);
+            $contenido=$this->redis->get($tableName);
             echo "\n tabla contenido: ".$contenido;
         }
     }
 
-    public function deleteTable($table_name) {
-        if ($this->redis->exists($table_name)) {
+    public function deleteTable($tableName) {
+        if ($this->redis->exists($tableName)) {
             // Delete the table in redis
-            $this->redis->del($table_name);
+            $this->redis->del($tableName);
         } else {
-            throw new Exception("La tabla $table_name no existe en Redis.");
+            throw new Exception("La tabla $tableName no existe en Redis.");
         }
     }
 
-    public function getTable($table_name) {
-        if ($this->redis->exists($table_name)) {
-            $content=$this->redis->get($table_name);
-            return json_decode($content);
+    public function getTable($tableName):string {
+        if ($this->redis->exists($tableName)) {
+            $content=$this->redis->get($tableName);
+            return $content;
         }else{
             return "No exixte tabla";
         }
     }
+
+
+    public function openConnection() {
+        // TODO: Implement openConnection() method.
+    }
+
+    public function closeConnection() {
+        // TODO: Implement closeConnection() method.
+    }
+
+    public function create($data) {
+        // TODO: Implement create() method.
+    }
+
+    public function read($id) {
+        // TODO: Implement read() method.
+    }
+
+    public function update($id, $data) {
+        // TODO: Implement update() method.
+    }
+
+    public function delete($id) {
+        // TODO: Implement delete() method.
+    }
+    
 }

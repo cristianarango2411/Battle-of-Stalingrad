@@ -1,4 +1,8 @@
 <?php
+declare( strict_types = 1 );
+namespace Battle\Model;
+
+use Battle\Model\Tank;
 
 class Battle
 {

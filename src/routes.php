@@ -1,22 +1,55 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Silex\Application;
+use Battle\Repository\CouchbaseConnection;
+use Battle\ScoreManager;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Factory\AppFactory;
 
-$app = new Application();
+// Instantiate App
+$app = AppFactory::create();
+
+// Add error middleware
+$app->addErrorMiddleware(true, true, true);
+
+
+$app->get('/hello/{name}', function (Request $request, Response $response, $args) {
+    $name = $args['name'];
+    $response->getBody()->write("Hello, $name");
+    return $response;
+});
+
+$app->get('/my-endpoint', function (Request $request, Response $response, $args){
+
+    $couchbase = new CouchbaseConnection();
+    $collectionIds=$couchbase->getCollectionIds('tanks');
+    var_dump($collectionIds);
+    $response->getBody()->write('Hello, Endpoint!');
+    return $response->withStatus(200);
+});
+
+$app->run();
+
+
 /*
+$app = new Application();
+$app['debug'] = true;
+
+
 $app->get('/', function() {
     return 'Hello, world!';
 });
 
 $app->get('/my-endpoint', function() {
+    $couchbase=new CouchbaseConnection();
+    //var_dump($couchbase->getConnection());
     return new Response('Hello, Endpoind!', 200);
-});*/
+});
 
 $app->get('/api/v1/tanks/{tank_id}', function($tank_id) use ($app) {
     // Replace this with code to load the tank from the database
-    return "Tank: " . $tank_id;
+    $tank=ScoreManager::loadTank($tank_id);
+    return "Tank: " . $tank;
 });
 
 // Load game map from database
@@ -61,4 +94,6 @@ $app->post('/api/v1/score', function(Request $request) use ($app) {
     return "Score saved: " . $score;
 });
 
-$app->run();
+
+
+$app->run();*/

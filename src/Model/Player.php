@@ -1,5 +1,6 @@
 <?php
-
+declare( strict_types = 1 );
+namespace Battle\Model;
 
 class Player {
     public $userName;
@@ -11,7 +12,6 @@ class Player {
     public function __construct($userName, $id) {
         $this->userName = $userName;
         $this->id = $id;
-        $this->score = $score;
     }
 
     public function getName() {

@@ -1,14 +1,13 @@
 <?php
-
+declare( strict_types = 1 );
+namespace Battle\Model;
 class Obstacle
 {
-    public $type;
     public $x;
     public $y;
 
-    public function __construct($type, $x, $y)
+    public function __construct($x, $y)
     {
-        $this->type = $type;
         $this->x = $x;
         $this->y = $y;
     }

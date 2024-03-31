@@ -2,9 +2,8 @@
 
 require ('vendor/autoload.php'); 
 
-
-$app = new Silex\Application();
+use Slim\Factory\AppFactory;
 
 require __DIR__.'/src/routes.php';
 
-$app->run();
+$app = AppFactory::create();

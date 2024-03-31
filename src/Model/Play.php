@@ -1,5 +1,6 @@
 <?php
-
+declare( strict_types = 1 );
+namespace Battle\Model;
 class Play {
     private $player1;
     private $player2;

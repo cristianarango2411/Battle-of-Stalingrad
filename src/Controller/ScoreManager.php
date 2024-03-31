@@ -4,7 +4,6 @@ namespace Battle;
 Use Battle\Model\RedisConnection;
 use Battle\Tank;
 
-require_once 'v_tank.php';
 
 
 $tank = new Tank($id, $name, $health, $attack, $defense, $speed, $fuelRange, $turretRange, $viewport, $barrel, $turretRing, $commanderHatch, $wheels, $x, $y);
@@ -21,7 +20,7 @@ class ScoreManager
     }
 
     //controller to load tank from database
-    public function loadTank($tank_id) {
+    public static function loadTank($tank_id) {
 
         $table_tank = $_POST['table_tank_get'];//nombramos la tabla
 
