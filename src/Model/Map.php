@@ -59,7 +59,7 @@ class Map
     public function isPositionOccupied($x, $y)
     {
         foreach ($this->obstacles as $obstacle) {
-            if ($obstacle->x == $x && $obstacle->y == $y) {
+            if ($obstacle['x'] == $x && $obstacle['y'] == $y) {
                 return true;
             }
         }
@@ -75,7 +75,7 @@ class Map
 
         // Check if there is an obstacle in that position
         foreach ($this->obstacles as $obstacle) {
-            if ($obstacle->x == $x && $obstacle->y == $y) {
+            if ($obstacle['x'] == $x && $obstacle['y'] == $y) {
                 return false;
             }
         }

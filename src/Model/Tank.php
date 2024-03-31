@@ -12,7 +12,7 @@ class Tank {
     private $fuelRange;
     private $position;
     private $turretRange;
-
+    private $score;
 
     public function __construct($id, $name, $health, $attack, $defense, $speed, $fuelRange, $turretRange) {
         $this->attack = $attack;
@@ -23,6 +23,8 @@ class Tank {
         $this->speed = $speed;
         $this->fuelRange = $fuelRange;
         $this->turretRange = $turretRange;
+        $this->score = 0;
+        $this->position = ['x' => 0, 'y' => 0];
     }
     public static function fromArray(array $data) {
         return new self($data['id'], $data['name'], $data['health'], $data['attack'], $data['defense'], $data['speed'], $data['fuelRange'], $data['turretRange']);
@@ -32,6 +34,7 @@ class Tank {
     {
         $damage = max(0, $this->attack - $target->defense);
         $target->health -= $damage;
+        $this->score += $damage;
     }
 
     public function move($x, $y)
@@ -88,17 +91,14 @@ class Tank {
         return $this->position;
     }
 
-    public function jsonSerialize() {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'health' => $this->health,
-            'speed' => $this->speed,
-            'fuelRange' => $this->fuelRange,
-            'turretRange' => $this->turretRange,
-            'attack' => $this->attack,
-            'defense' => $this->defense,
-        ];
+    public function getScore()
+    {
+        return $this->score;
+    }
+
+    public function setScore($score)
+    {
+        $this->score = $score;
     }
 
 

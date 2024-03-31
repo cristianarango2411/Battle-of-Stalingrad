@@ -11,7 +11,17 @@ use GuzzleHttp\Exception\RequestException;
 
 function makeRequest(&$client,$method, $url, $data = false){
     try {
-        $response = $client->request($method, $url);
+        if($data){
+            $requestData=[
+                'body' => $data,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+            ];
+            $response = $client->request($method, $url, $requestData);
+        }else{
+            $response = $client->request($method, $url);
+        }
         return $response;
     } catch (RequestException $e) {
         // Exception handling

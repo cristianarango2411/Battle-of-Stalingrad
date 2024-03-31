@@ -5,6 +5,7 @@ namespace Battle\Model;
 class Player {
     private $userName;
     private $id;
+    private $tank;
     private $score;
 
     public function __construct($userName, $id) {
@@ -33,6 +34,14 @@ class Player {
 
     public function setI($id) {
         $this->id = $id;
+    }
+
+    public function getTank():Tank {
+        return $this->tank;
+    }
+    
+    public function setTank(Tank $tank) {
+        $this->tank = $tank;
     }
 }
 ?>

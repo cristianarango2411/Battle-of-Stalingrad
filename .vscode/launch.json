@@ -10,7 +10,7 @@
             "request": "launch",
             "port": 9003,
             "pathMappings": {
-                "/home/cristian/docker/src/": "${workspaceFolder}"
+                "/var/www/html/": "${workspaceFolder}"
             }
         },
         {

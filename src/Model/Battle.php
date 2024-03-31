@@ -20,34 +20,41 @@ class Battle
         $this->players[$tank->getId()] = $playerID;
     }
 
+    private function beforeInit(){
+        $tank1 = $this->tanks[0];
+        $tank2 = $this->tanks[1];
+        $tank1->move(0, 0); // Move tank 1 to the top-left corner
+        $tank2->move($this->map->getWidth() - 1, $this->map->getHeight() - 1); // Move tank 2 to the bottom-right corner
+        $tank1->setScore(0); // Reset the score of tank 1
+        $tank2->setScore(0); // Reset the score of tank 2
+    }   
 
     public function simulate(){
         $turn = 1;
         $remainingTanks = count($this->tanks);
         $tank1 = $this->tanks[0];
         $tank2 = $this->tanks[1];
+        $this->beforeInit();
+        $battleTanks = $this->tanks;
 
         while ($remainingTanks > 1) {
             echo "Turno $turn\n";
 
             // Get AI moves for each tank
             $moves = [];
-            /*foreach ($this->tanks as $tank) {
-                $moves[$tank->id] = AI::getNextMove($tank, $this->map);
-            }*/
-            $moves[$tank1->id] = AI::getNextMove($tank1, $this->map, $tank2->getPosition()['x'], $tank2->getPosition()['y']);
-            $moves[$tank2->id] = AI::getNextMove($tank2, $this->map, $tank1->getPosition()['x'], $tank1->getPosition()['y']);
+            $moves[$tank1->getId()] = AI::getNextMove($tank1, $this->map, $tank2->getPosition()['x'], $tank2->getPosition()['y']);
+            $moves[$tank2->getId()] = AI::getNextMove($tank2, $this->map, $tank1->getPosition()['x'], $tank1->getPosition()['y']);
 
             // Move the tanks
-            foreach ($this->tanks as $tank) {
-                $move = $moves[$tank->id];
+            foreach ($battleTanks as $tank) {
+                $move = $moves[$tank->getId()];
                 if ($this->map->isValidPosition($move['x'], $move['y'])) {
                     $tank->move($move['x'], $move['y']);
                 }   
             }
 
             // Perform attacks
-            foreach ($this->tanks as $attackingTank) {
+            foreach ($battleTanks as $attackingTank) {
                 $tanksInRange = $this->getTanksInRange($attackingTank);
                 foreach ($tanksInRange as $defendingTank) {
                     $attackingTank->attack($defendingTank);
@@ -56,24 +63,27 @@ class Battle
             }
 
             // Eliminate destroyed tanks
-            $this->tanks = array_filter($this->tanks, function ($tank) {
+            $battleTanks = array_filter($battleTanks, function ($tank) {
             return $tank->health > 0;
             });
-            $remainingTanks = count($this->tanks);
+            $remainingTanks = count($battleTanks);
 
             $turn++;
         }
 
         // Determine the winner
-        $winner = reset($this->tanks);
-        $winnerId = $winner->id;
-        $winnerPlayer = $this->players[$winnerId];
+        $winner = reset($battleTanks);
+        $winnerId = $winner->getId();
+        //$winnerPlayer = $this->players[$winnerId];
 
-        echo "El ganador es: {$winnerPlayer->id}\n";
+        //echo "El ganador es: {$winnerPlayer->getId()}\n";
 
         // Save winner's score
         //$scoreManager = new ScoreManager($db);
         //$scoreManager->saveScore($winnerPlayer->id, $turn);
+
+        return $winner;
+
     }
 
     public function getTanksInRange(Tank $tank){
@@ -83,7 +93,7 @@ class Battle
             if ($otherTank !== $tank) {
                 $otherPosition = $otherTank->getPosition();
                 $distance = sqrt(pow($position['x'] - $otherPosition['x'], 2) + pow($position['y'] - $otherPosition['y'], 2));
-                if ($distance <= $tank->turretRange) {
+                if ($distance <= $tank->getturretRange()) {
                     $tanksInRange[] = $otherTank;
                 }
             }
@@ -96,10 +106,6 @@ class Battle
         $position1 = $tank1->getPosition();
         $position2 = $tank2->getPosition();
         $distance = sqrt(pow($position1['x'] - $position2['x'], 2) + pow($position1['y'] - $position2['y'], 2));
-        return $distance <= $tank1->turretRange;
+        return $distance <= $tank1->getturretRange();
     }
 }
-
-
-
-?>
