@@ -167,7 +167,7 @@ function createMaps(&$collection, &$opts) {
 
         $map = new Map($id, $mapName, $width, $height, $obstacles);
         $maps[] = $map;
-        $collection->upsert($map->id(), $map);
+        $collection->upsert($map->getId(), $map);
     }
     return $maps;
 }

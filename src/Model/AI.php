@@ -1,7 +1,10 @@
 <?php
+declare( strict_types = 1 );
+namespace Battle\Model;
+
 class AI
 {
-    public function getNextMove(Tank $tank, Map $map, $targetX, $targetY)
+    public static function getNextMove(Tank $tank, Map $map, $targetX, $targetY)
     {
         $startX = $tank->getPosition()['x'];
         $startY = $tank->getPosition()['y'];
@@ -11,7 +14,7 @@ class AI
 
         $currentNode = null;
         while (!empty($openList)) {
-            $currentNode = $this->getMinFNode($openList);
+            $currentNode = self::getMinFNode($openList);
             if ($currentNode->x == $targetX && $currentNode->y == $targetY) {
                 break; // We find the shortest path
             }
@@ -19,13 +22,13 @@ class AI
             array_splice($openList, array_search($currentNode, $openList), 1);
             $closedList[] = $currentNode;
 
-            $neighbors = $this->getNeighbors($currentNode, $map);
+            $neighbors = self::getNeighbors($currentNode, $map);
             foreach ($neighbors as $neighbor) {
-                if ($this->isInClosedList($neighbor, $closedList)) {
+                if (self::isInClosedList($neighbor, $closedList)) {
                     continue;
                 }
 
-                $existingNode = $this->findNode($neighbor, $openList);
+                $existingNode = self::findNode($neighbor, $openList);
                 if ($existingNode) {
                     if ($neighbor->g < $existingNode->g) {
                         $existingNode->parent = $neighbor->parent;
@@ -51,7 +54,7 @@ class AI
         return []; // No way found
     }
 
-    private function getMinFNode($openList)
+    private static function getMinFNode($openList)
     {
         $minFNode = null;
         foreach ($openList as $node) {
@@ -62,7 +65,7 @@ class AI
         return $minFNode;
     }
 
-    private function getNeighbors(Node $node, Map $map)
+    private static function getNeighbors(Node $node, Map $map)
     {
         $neighbors = [];
         $offsets = [
@@ -82,7 +85,7 @@ class AI
         return $neighbors;
     }
 
-    private function isInClosedList(Node $node, array $closedList)
+    private static function isInClosedList(Node $node, array $closedList)
     {
         foreach ($closedList as $closedNode) {
             if ($closedNode->x == $node->x && $closedNode->y == $node->y) {
@@ -92,7 +95,7 @@ class AI
         return false;
     }
 
-    private function findNode(Node $node, array $openList)
+    private static function findNode(Node $node, array $openList)
     {
         foreach ($openList as $openNode) {
             if ($openNode->x == $node->x && $openNode->y == $node->y) {
@@ -102,7 +105,5 @@ class AI
         return null;
     }
 }
-
-?>
 
 

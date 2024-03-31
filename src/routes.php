@@ -1,5 +1,6 @@
 <?php
 
+use Battle\Model\Battle;
 use Battle\Repository\CouchbaseConnection;
 use Battle\ScoreManager;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -60,7 +61,15 @@ $app->get('/api/v1/maps', function (Request $request, Response $response, $args)
 
 $app->post('/api/v1/simulate', function (Request $request, Response $response, $args){
     $data = $request->getParsedBody();
+    $couchbase = new CouchbaseConnection();
+    $mapCollection=$couchbase->getCollection('maps');
+    //$map=$mapCollection->get($data['map_id'])->content();
 
+
+    $response->getBody()->write($data['map_id']);
+    return $response->withStatus(200);
+
+    //$battle = new Battle($map);
     // Ahora puedes acceder a los datos del JSON
     //$someValue = $data['someKey'];
 

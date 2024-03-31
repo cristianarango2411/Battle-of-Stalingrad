@@ -3,15 +3,15 @@ declare( strict_types = 1 );
 namespace Battle\Model;
 
 class Tank {
-    public $id;
-    public $name;
-    public $health;
-    public $attack;
-    public $defense;
-    public $speed; 
-    public $fuelRange;
-    public $position;
-    public $turretRange;
+    private $id;
+    private $name;
+    private $health;
+    private $attack;
+    private $defense;
+    private $speed; 
+    private $fuelRange;
+    private $position;
+    private $turretRange;
 
 
     public function __construct($id, $name, $health, $attack, $defense, $speed, $fuelRange, $turretRange) {

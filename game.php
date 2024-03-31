@@ -96,17 +96,30 @@ if($response->getStatusCode() == 200){
 $mapIndex = intval($mapIndex);
 $tankIds = [];
 foreach($tanks as $tank){
-    $tankIds['tankid'] = $tank->id;
+    $tankIds[] = $tank->getId();
 }
 
 $data = [
     'tanks' => [
         $tankIds
     ],
-    'mapid' => $maps[$mapIndex]->getId()
+    'mapid' => $maps[$mapIndex]->getId(),
+    'players' => [
+        $players[0]->getId(),
+        $players[1]->getId()
+    ]
 ];
 $jsonData = json_encode($data);
-
+//fwrite(STDOUT, "\nJson: \n".$jsonData);
 //Simulation
 $response = makeRequest($client,'POST', $baseURL.'simulate', $jsonData);//Tengo que simular y seguir con el juego
+if($response->getStatusCode() == 200){
+    $jsonResponse=$response->getBody()->getContents();
+    fwrite(STDOUT, "\nResponse: \n".$jsonResponse);
+}else{
+    fwrite(STDOUT, "\nError: We can't connet to the API\n");
+    die();
+}
+
+
  

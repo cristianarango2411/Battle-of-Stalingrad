@@ -3,37 +3,40 @@ declare( strict_types = 1 );
 namespace Battle\Model;
 
 use Battle\Model\Tank;
+use Battle\Model\AI;
 
 class Battle
 {
-    public $map;
-    public $tanks = [];
-    public $players = [];
-    public $ai;
+    private $map;
+    private $tanks = [];
+    private $players = [];
 
-    public function __construct(Map $map, AI $ai){
+    public function __construct(Map $map){
         $this->map = $map;
-        $this->ai = $ai;
     }
 
-    public function addTank(Tank $tank, Player $player){
+    public function addTank(Tank $tank, String $playerID){
         $this->tanks[] = $tank;
-        $this->players[$tank->id] = $player;
+        $this->players[$tank->getId()] = $playerID;
     }
 
 
     public function simulate(){
         $turn = 1;
         $remainingTanks = count($this->tanks);
+        $tank1 = $this->tanks[0];
+        $tank2 = $this->tanks[1];
 
         while ($remainingTanks > 1) {
             echo "Turno $turn\n";
 
             // Get AI moves for each tank
             $moves = [];
-            foreach ($this->tanks as $tank) {
-                $moves[$tank->id] = $this->ai->getNextMove($tank, $this->map);
-            }
+            /*foreach ($this->tanks as $tank) {
+                $moves[$tank->id] = AI::getNextMove($tank, $this->map);
+            }*/
+            $moves[$tank1->id] = AI::getNextMove($tank1, $this->map, $tank2->getPosition()['x'], $tank2->getPosition()['y']);
+            $moves[$tank2->id] = AI::getNextMove($tank2, $this->map, $tank1->getPosition()['x'], $tank1->getPosition()['y']);
 
             // Move the tanks
             foreach ($this->tanks as $tank) {
@@ -69,8 +72,8 @@ class Battle
         echo "El ganador es: {$winnerPlayer->id}\n";
 
         // Save winner's score
-        $scoreManager = new ScoreManager($db);
-        $scoreManager->saveScore($winnerPlayer->id, $turn);
+        //$scoreManager = new ScoreManager($db);
+        //$scoreManager->saveScore($winnerPlayer->id, $turn);
     }
 
     public function getTanksInRange(Tank $tank){
