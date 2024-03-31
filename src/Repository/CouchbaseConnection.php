@@ -41,7 +41,6 @@ class CouchbaseConnection{
         $scopeName = getenv('COUCHBASE_SCOPE');
         $query = "SELECT META().id FROM `$bucketName`.`$scopeName`.`$collectionName`";
         $result = $this->cluster->query($query);
-        //return $result->rows();
         $ids = [];
         foreach ($result->rows() as $row) {
             $ids[] = $row['id'];
@@ -49,8 +48,17 @@ class CouchbaseConnection{
         return $ids;
     }
 
-
-
+    public function getAllElements($collectionName){
+        $bucketName = getenv('COUCHBASE_BUCKET');
+        $scopeName = getenv('COUCHBASE_SCOPE');
+        $query = "SELECT * FROM `$bucketName`.`$scopeName`.`$collectionName`";
+        $result = $this->cluster->query($query);
+        $elements = [];
+        foreach ($result->rows() as $row) {
+            $elements[] = $row;
+        }
+        return $elements;
+    }
 
     public function openConnection() {
         $options = new ClusterOptions();

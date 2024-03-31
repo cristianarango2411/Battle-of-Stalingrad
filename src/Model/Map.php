@@ -6,9 +6,10 @@ class Map
 {
     private $id;
     private $name;
-    public $width;
-    public $height;
-    public $obstacles;
+    private $width;
+    private $height;
+    private $obstacles;
+
     public function __construct($id, $name, $width, $height, array $obstacles)
     {
         $this->id = $id;
@@ -17,6 +18,10 @@ class Map
         $this->height = $height;
         $this->obstacles = $obstacles;
     }
+    
+    public static function fromArray(array $data) {
+        return new self($data['id'], $data['name'], $data['width'], $data['height'], $data['obstacles']);
+    }
 
     public function getId() {
         return $this->id;
@@ -24,6 +29,18 @@ class Map
 
     public function getName() {
         return $this->name;
+    }
+
+    public function getWidth() {
+        return $this->width;
+    }
+
+    public function getHeight() {
+        return $this->height;
+    }
+
+    public function obstacles() {
+        return $this->obstacles;
     }
 
     public function addObstacle(Obstacle $obstacle)

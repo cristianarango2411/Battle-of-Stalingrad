@@ -3,15 +3,17 @@ declare( strict_types = 1 );
 namespace Battle\Model;
 
 class Player {
-    public $userName;
-    public $id;
-    //id is randomly generated
-    public $score;
-    //start and end date
+    private $userName;
+    private $id;
+    private $score;
 
     public function __construct($userName, $id) {
         $this->userName = $userName;
         $this->id = $id;
+    }
+
+    public static function fromArray(array $data) {
+        return new self($data['userName'], $data['id']);
     }
 
     public function getName() {

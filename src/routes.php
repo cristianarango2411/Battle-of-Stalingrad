@@ -23,9 +23,49 @@ $app->get('/my-endpoint', function (Request $request, Response $response, $args)
 
     $couchbase = new CouchbaseConnection();
     $collectionIds=$couchbase->getCollectionIds('tanks');
-    var_dump($collectionIds);
-    $response->getBody()->write('Hello, Endpoint!');
+    $jsonResponse=json_encode($collectionIds);
+    $response->getBody()->write($jsonResponse);
     return $response->withStatus(200);
+});
+
+$app->get('/api/v1/players', function (Request $request, Response $response, $args){
+    $couchbase = new CouchbaseConnection();
+    $players=$couchbase->getCollection('players');
+    $collectionIds=$couchbase->getCollectionIds('players');
+    $randomKeys = array_rand($collectionIds, 2);
+    $playersArray = [];
+    $playersArray[] = $players->get($collectionIds[$randomKeys[0]])->content();
+    $playersArray[] = $players->get($collectionIds[$randomKeys[1]])->content();
+    $jsonResponse=json_encode($playersArray);
+    $response->getBody()->write($jsonResponse);
+    return $response->withStatus(200);
+});
+
+$app->get('/api/v1/tanks', function (Request $request, Response $response, $args){
+    $couchbase = new CouchbaseConnection();
+    $elements=$couchbase->getAllElements('tanks');
+    $jsonResponse=json_encode($elements);
+    $response->getBody()->write($jsonResponse);
+    return $response->withStatus(200);
+});
+
+$app->get('/api/v1/maps', function (Request $request, Response $response, $args){
+    $couchbase = new CouchbaseConnection();
+    $elements=$couchbase->getAllElements('maps');
+    $jsonResponse=json_encode($elements);
+    $response->getBody()->write($jsonResponse);
+    return $response->withStatus(200);
+});
+
+
+$app->post('/api/v1/simulate', function (Request $request, Response $response, $args){
+    $data = $request->getParsedBody();
+
+    // Ahora puedes acceder a los datos del JSON
+    //$someValue = $data['someKey'];
+
+    //$response->getBody()->write($jsonResponse);
+    //return $response->withStatus(200);
 });
 
 $app->run();

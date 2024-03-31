@@ -52,18 +52,19 @@ echo "<br><br>";
 
 $bucketName = getenv('COUCHBASE_BUCKET'); // Replace with your bucket name
 $scopeName = getenv('COUCHBASE_SCOPE'); // Replace with your scope name
-$collectionName = 'tanks'; // Replace with your collection name
 
-//$cluster = new \Couchbase\Cluster(getenv('COUCHBASE_HOST'), $options);
-//$query = "CREATE PRIMARY INDEX ON `{$bucketName}`.`{$scopeName}`.`{$collectionName}`";
-//$cluster->query($query);
+
 
 //echo "Primary index created successfully.\n";
 //$collections = ['tanks', 'maps', 'players', 'scores', 'leaderboards'];
-$collections = ['tanks', 'maps', 'players'];
+$collections = ['maps'];
 foreach ($collections as $collectionName) {
     try {
-        //$bucketManager->createCollection($scopeName, $collectionName);
+        $bucketManager->createCollection($scopeName, $collectionName);
+
+        $query = "CREATE PRIMARY INDEX ON `{$bucketName}`.`{$scopeName}`.`{$collectionName}`";
+        $cluster->query($query);
+        echo "Primary index created successfully.\n";
 
         $collection=$bucket->scope(getenv('COUCHBASE_SCOPE'))->collection($collectionName);
         echo "Collection: $collectionName <br>";
@@ -73,12 +74,10 @@ foreach ($collections as $collectionName) {
         $elements=[];
         switch ($collectionName) {
             case 'tanks':
-                //$collection->remove("German_Panzer");
-                //$collection->upsert("German_Panzer", '{"text": "prueba"}');
                 //$elements=createTanks($collection, $opts);
                 break;
             case 'maps':
-                //$elements=createMaps($collection, $opts);
+                $elements=createMaps($collection, $opts);
                 break;
             case 'players':
                 //$elements=createPlayers($collection, $opts);
@@ -103,7 +102,7 @@ function createTanks(&$collection, $opts) {
     // Create a German Panzer IV tank
     $i=0;
     $tanks[] = new Tank(
-        $id = "German_Panzer_IV",
+        $id = "1000",
         $name = "German Panzer IV",
         $health = 100,
         $speed = 30,
@@ -115,12 +114,12 @@ function createTanks(&$collection, $opts) {
     $tankJson=json_encode($tanks[$i]);
     echo "<br><br>ID:<br>".$tanks[$i]->getId()."<br>";
     echo "".$tankJson."<br><br>";
-    $res = $collection->upsert($tanks[$i]->getId(), $tankJson);
+    $res = $collection->upsert($tanks[$i]->getId(), $tanks[$i]);
     echo "<br>document \"document-key\" has been created with CAS \"%s\"\n". $res->cas();
 
     // Create a Soviet T-34 tank
     $tanks[] = new Tank(
-        $id = "Soviet_T-34",
+        $id = "1001",
         $name = "Soviet T-34",
         $health = 100,
         $speed = 32,
@@ -133,7 +132,7 @@ function createTanks(&$collection, $opts) {
     $tankJson=json_encode($tanks[$i]);
     echo "<br><br>ID:<br>".$tanks[$i]->getName()."<br>";
     echo "".$tankJson."<br><br>";
-    $res = $collection->upsert($tanks[$i]->getId(), $tankJson);
+    $res = $collection->upsert($tanks[$i]->getId(), $tanks[$i]);
     echo "<br>document \"document-key\" has been created with CAS \"%s\"\n". $res->cas();
     return $tanks;
 }
@@ -168,7 +167,7 @@ function createMaps(&$collection, &$opts) {
 
         $map = new Map($id, $mapName, $width, $height, $obstacles);
         $maps[] = $map;
-        $collection->insert($map->getId(), $map, $opts);
+        $collection->upsert($map->id(), $map);
     }
     return $maps;
 }

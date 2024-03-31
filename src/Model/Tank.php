@@ -24,6 +24,9 @@ class Tank {
         $this->fuelRange = $fuelRange;
         $this->turretRange = $turretRange;
     }
+    public static function fromArray(array $data) {
+        return new self($data['id'], $data['name'], $data['health'], $data['attack'], $data['defense'], $data['speed'], $data['fuelRange'], $data['turretRange']);
+    }
 
     public function attack(Tank $target)
     {
