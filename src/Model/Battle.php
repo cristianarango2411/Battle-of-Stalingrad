@@ -106,12 +106,4 @@ class Battle
         }
         return $tanksInRange;
     }
-
-    private function isInRange(Tank $tank1, Tank $tank2)
-    {
-        $position1 = $tank1->getPosition();
-        $position2 = $tank2->getPosition();
-        $distance = sqrt(pow($position1['x'] - $position2['x'], 2) + pow($position1['y'] - $position2['y'], 2));
-        return $distance <= $tank1->getturretRange();
-    }
 }
