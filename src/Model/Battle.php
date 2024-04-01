@@ -24,9 +24,9 @@ class Battle
     }
     
     public function getWinnerTank(){
-        return $this->tanks[0];
+        return reset($this->tanks);
     }
-    
+
     public function addTank(Tank $tank, String $playerID){
         $this->tanks[] = $tank;
         $this->players[$tank->getId()] = $playerID;
@@ -50,7 +50,7 @@ class Battle
         $battleTanks = $this->tanks;
 
         while ($remainingTanks > 1) {
-            echo "Turno $turn\n";
+            //echo "Turn $turn\n";
 
             // Get AI moves for each tank
             $moves = [];
@@ -70,7 +70,7 @@ class Battle
                 $tanksInRange = $this->getTanksInRange($attackingTank);
                 foreach ($tanksInRange as $defendingTank) {
                     $attackingTank->attack($defendingTank);
-                    echo "Tanque {$attackingTank->getId()} ataca a Tanque {$defendingTank->getId()} (Salud restante: {$defendingTank->gethealth()})\n";
+                    //echo "Tank {$attackingTank->getId()} attack to Tank {$defendingTank->getId()} (healt: {$defendingTank->gethealth()})\n";
                 }
             }
 
@@ -88,12 +88,6 @@ class Battle
         $winnerId = $winner->getId();
         $winnerPlayer = $this->players[$winnerId];
         $this->tanks = $battleTanks;
-        //echo "El ganador es: {$winnerPlayer->getId()}\n";
-
-        // Save winner's score
-        //$scoreManager = new ScoreManager($db);
-        //$scoreManager->saveScore($winnerPlayer->id, $turn);
-
         return $winnerPlayer;
 
     }

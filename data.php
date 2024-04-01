@@ -20,12 +20,6 @@ $opts->timeout(10000 /* milliseconds */);
 $cluster = new Cluster(getenv('COUCHBASE_HOST'), $options );
 
 
-/*try {
-    $cluster->buckets()->getBucket(getenv('COUCHBASE_BUCKET'));
-} catch (Exception $ex) {
-    echo $ex->getMessage();
-}*/ 
-
 $bucket = $cluster->bucket(getenv('COUCHBASE_BUCKET'));
 
 var_dump($bucket);
@@ -37,7 +31,6 @@ echo "COUCHBASE_SCOPE: ".getenv('COUCHBASE_SCOPE')."<br><br>";
 // Create the 'Battle' scope if it doesn't exist
 $bucketManager = $bucket->collections();
 try {
-    //$bucketManager->createScope(getenv('COUCHBASE_SCOPE'));
     $ping=$bucket->ping();
     var_dump($ping);
 } catch (Exception $e) {
@@ -45,17 +38,9 @@ try {
 }
 echo "<br><br>";
 
-
-// Create the 'tanks', 'maps', 'players', 'scores', and 'leaderboards' collections
-//$collections = ['tanks', 'maps', 'players', 'scores', 'leaderboards'];
-
-
 $bucketName = getenv('COUCHBASE_BUCKET'); // Replace with your bucket name
 $scopeName = getenv('COUCHBASE_SCOPE'); // Replace with your scope name
 
-
-
-//echo "Primary index created successfully.\n";
 //$collections = ['tanks', 'maps', 'players', 'scores', 'leaderboards'];
 $collections = ['tanks'];
 foreach ($collections as $collectionName) {
@@ -74,7 +59,7 @@ foreach ($collections as $collectionName) {
         $elements=[];
         switch ($collectionName) {
             case 'tanks':
-                $elements=createTanks($collection, $opts);
+                //$elements=createTanks($collection, $opts);
                 break;
             case 'maps':
                 //$elements=createMaps($collection, $opts);
@@ -85,10 +70,6 @@ foreach ($collections as $collectionName) {
             default:
                 break;
         }
-        /*foreach ($elements as $key => $element) {
-            echo "<br><br>Element created: $element->getId()<br>";
-            var_dump( $collection->get((string)$element->getId()) );
-        }*/
         
     } catch (Exception $ex) {
         // The collection probably already exists, so we can ignore this error
@@ -116,10 +97,44 @@ function createTanks(&$collection, $opts) {
     echo "".$tankJson."<br><br>";
     $res = $collection->upsert($tanks[$i]->getId(), $tanks[$i]);
     echo "<br>document \"document-key\" has been created with CAS \"%s\"\n". $res->cas();
+    // Create a German Panzer V tank
+    $i=1;
+    $tanks[] = new Tank(
+        $id = "1001",
+        $name = "German Panzer V",
+        $health = 110,
+        $attack = 73,
+        $defense = 51,
+        $speed = 2,
+        $fuelRange = 200,
+        $turretRange = 54
+    );
+    $tankJson=json_encode($tanks[$i]);
+    echo "<br><br>ID:<br>".$tanks[$i]->getId()."<br>";
+    echo "".$tankJson."<br><br>";
+    $res = $collection->upsert($tanks[$i]->getId(), $tanks[$i]);
+    echo "<br>document \"document-key\" has been created with CAS \"%s\"\n". $res->cas();
+    // Create a German Panzer VI tank
+    $i=2;
+    $tanks[] = new Tank(
+        $id = "1002",
+        $name = "German Panzer VI",
+        $health = 120,
+        $attack = 75,
+        $defense = 54,
+        $speed = 2,
+        $fuelRange = 200,
+        $turretRange = 55
+    );
+    $tankJson=json_encode($tanks[$i]);
+    echo "<br><br>ID:<br>".$tanks[$i]->getId()."<br>";
+    echo "".$tankJson."<br><br>";
+    $res = $collection->upsert($tanks[$i]->getId(), $tanks[$i]);
+    echo "<br>document \"document-key\" has been created with CAS \"%s\"\n". $res->cas();
 
     // Create a Soviet T-34 tank
     $tanks[] = new Tank(
-        $id = "1001",
+        $id = "1003",
         $name = "Soviet T-34",
         $health = 100,
         $attack = 65,
@@ -128,7 +143,60 @@ function createTanks(&$collection, $opts) {
         $fuelRange = 210,
         $turretRange = 45
     );
-    $i=1;
+    $i=3;
+    $tankJson=json_encode($tanks[$i]);
+    echo "<br><br>ID:<br>".$tanks[$i]->getName()."<br>";
+    echo "".$tankJson."<br><br>";
+    $res = $collection->upsert($tanks[$i]->getId(), $tanks[$i]);
+    echo "<br>document \"document-key\" has been created with CAS \"%s\"\n". $res->cas();
+
+    // Create a Soviet T-35 tank
+    $tanks[] = new Tank(
+        $id = "1004",
+        $name = "Soviet T-35",
+        $health = 105,
+        $attack = 72,
+        $defense = 53,
+        $speed = 3,
+        $fuelRange = 210,
+        $turretRange = 60
+    );
+    $i=4;
+    $tankJson=json_encode($tanks[$i]);
+    echo "<br><br>ID:<br>".$tanks[$i]->getName()."<br>";
+    echo "".$tankJson."<br><br>";
+    $res = $collection->upsert($tanks[$i]->getId(), $tanks[$i]);
+    echo "<br>document \"document-key\" has been created with CAS \"%s\"\n". $res->cas();
+
+    // Create a Soviet T-36 tank
+    $tanks[] = new Tank(
+        $id = "1005",
+        $name = "Soviet T-36",
+        $health = 120,
+        $attack = 74,
+        $defense = 50,
+        $speed = 3,
+        $fuelRange = 210,
+        $turretRange = 63
+    );
+    $i=5;
+    $tankJson=json_encode($tanks[$i]);
+    echo "<br><br>ID:<br>".$tanks[$i]->getName()."<br>";
+    echo "".$tankJson."<br><br>";
+    $res = $collection->upsert($tanks[$i]->getId(), $tanks[$i]);
+    echo "<br>document \"document-key\" has been created with CAS \"%s\"\n". $res->cas();
+    // Create a Soviet T-37 tank
+    $tanks[] = new Tank(
+        $id = "1006",
+        $name = "Soviet T-37",
+        $health = 118,
+        $attack = 75,
+        $defense = 52,
+        $speed = 3,
+        $fuelRange = 210,
+        $turretRange = 60
+    );
+    $i=5;
     $tankJson=json_encode($tanks[$i]);
     echo "<br><br>ID:<br>".$tanks[$i]->getName()."<br>";
     echo "".$tankJson."<br><br>";
