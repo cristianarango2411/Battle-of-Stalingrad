@@ -36,6 +36,10 @@ To install Battle of Stalingrad, follow these steps:
     ```bash
     docker-compose ps
     ```
+# Swagger Documentation
+
+Our API is documented using Swagger. You can access the Swagger UI at:
+https://app.swaggerhub.com/apis-docs/cristianarango1910/BattleStalingrad/1.0.0
 
 ## Contact
 
