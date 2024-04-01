@@ -78,6 +78,24 @@ $app->post('/api/v1/simulate', function (Request $request, Response $response, $
     $battle->addTank($tank2, $data['players'][1]);//second player and second tank
     $winner=$battle->simulate();//simulate Batlle
 
+    $leaderboardsCollection=$couchbase->getCollection('leaderboards');//get leaderboards collection
+    if($leaderboardsCollection->exists($winner)->exists()){//check if player exists in leaderboards
+        $arrayLeaderboards=$leaderboardsCollection->get($winner)->content();//get map by id from coushbase
+        $score = $arrayLeaderboards['score'];//get score from leaderboards
+        $score += $battle->getWinnerTank()->getScore();//add score from first tank
+        $leaderboards = [
+            'player_id' => $winner,
+            'score' => $score
+        ];
+    }else{//create new player in leaderboards
+        $leaderboards = [
+            'player_id' => $winner,
+            'score' => $battle->getWinnerTank()->getScore()
+        ];
+    }
+    
+    $leaderboardsCollection->upsert($winner, $leaderboards);//update leaderboards
+
     $response->getBody()->write("Battle simulated");
     return $response->withStatus(200);
 

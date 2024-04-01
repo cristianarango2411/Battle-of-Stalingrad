@@ -57,7 +57,7 @@ $scopeName = getenv('COUCHBASE_SCOPE'); // Replace with your scope name
 
 //echo "Primary index created successfully.\n";
 //$collections = ['tanks', 'maps', 'players', 'scores', 'leaderboards'];
-$collections = ['maps'];
+$collections = ['tanks'];
 foreach ($collections as $collectionName) {
     try {
         $bucketManager->createCollection($scopeName, $collectionName);
@@ -74,10 +74,10 @@ foreach ($collections as $collectionName) {
         $elements=[];
         switch ($collectionName) {
             case 'tanks':
-                //$elements=createTanks($collection, $opts);
+                $elements=createTanks($collection, $opts);
                 break;
             case 'maps':
-                $elements=createMaps($collection, $opts);
+                //$elements=createMaps($collection, $opts);
                 break;
             case 'players':
                 //$elements=createPlayers($collection, $opts);
@@ -105,11 +105,11 @@ function createTanks(&$collection, $opts) {
         $id = "1000",
         $name = "German Panzer IV",
         $health = 100,
-        $speed = 30,
-        $fuelRange = 200,
-        $turretRange = 50,
         $attack = 70,
-        $defense = 50
+        $defense = 50,
+        $speed = 1,
+        $fuelRange = 200,
+        $turretRange = 50
     );
     $tankJson=json_encode($tanks[$i]);
     echo "<br><br>ID:<br>".$tanks[$i]->getId()."<br>";
@@ -122,11 +122,11 @@ function createTanks(&$collection, $opts) {
         $id = "1001",
         $name = "Soviet T-34",
         $health = 100,
-        $speed = 32,
-        $fuelRange = 210,
-        $turretRange = 45,
         $attack = 65,
-        $defense = 55
+        $defense = 55,
+        $speed = 2,
+        $fuelRange = 210,
+        $turretRange = 45
     );
     $i=1;
     $tankJson=json_encode($tanks[$i]);

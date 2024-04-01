@@ -15,6 +15,18 @@ class Battle
         $this->map = $map;
     }
 
+    public function getTanks(){
+        return $this->tanks;
+    }
+
+    public function getPlayers(){
+        return $this->players;
+    }
+    
+    public function getWinnerTank(){
+        return $this->tanks[0];
+    }
+    
     public function addTank(Tank $tank, String $playerID){
         $this->tanks[] = $tank;
         $this->players[$tank->getId()] = $playerID;
@@ -47,7 +59,7 @@ class Battle
 
             // Move the tanks
             foreach ($battleTanks as $tank) {
-                $move = $moves[$tank->getId()];
+                $move = $moves[$tank->getId()][1];
                 if ($this->map->isValidPosition($move['x'], $move['y'])) {
                     $tank->move($move['x'], $move['y']);
                 }   
@@ -58,13 +70,13 @@ class Battle
                 $tanksInRange = $this->getTanksInRange($attackingTank);
                 foreach ($tanksInRange as $defendingTank) {
                     $attackingTank->attack($defendingTank);
-                    echo "Tanque {$attackingTank->id} ataca a Tanque {$defendingTank->id} (Salud restante: {$defendingTank->health})\n";
+                    echo "Tanque {$attackingTank->getId()} ataca a Tanque {$defendingTank->getId()} (Salud restante: {$defendingTank->gethealth()})\n";
                 }
             }
 
             // Eliminate destroyed tanks
             $battleTanks = array_filter($battleTanks, function ($tank) {
-            return $tank->health > 0;
+                return $tank->gethealth() > 0;
             });
             $remainingTanks = count($battleTanks);
 
@@ -74,15 +86,15 @@ class Battle
         // Determine the winner
         $winner = reset($battleTanks);
         $winnerId = $winner->getId();
-        //$winnerPlayer = $this->players[$winnerId];
-
+        $winnerPlayer = $this->players[$winnerId];
+        $this->tanks = $battleTanks;
         //echo "El ganador es: {$winnerPlayer->getId()}\n";
 
         // Save winner's score
         //$scoreManager = new ScoreManager($db);
         //$scoreManager->saveScore($winnerPlayer->id, $turn);
 
-        return $winner;
+        return $winnerPlayer;
 
     }
 
