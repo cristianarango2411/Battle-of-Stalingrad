@@ -6,7 +6,7 @@ use Exception;
 use Predis\Client;
 use stdClass;
 
-class RedisConnection implements ConnectionInterface{
+class RedisConnection{
     private $redis;
 
     public function __construct() {
@@ -55,31 +55,6 @@ class RedisConnection implements ConnectionInterface{
         }else{
             return "No exixte tabla";
         }
-    }
-
-
-    public function openConnection() {
-        // TODO: Implement openConnection() method.
-    }
-
-    public function closeConnection() {
-        // TODO: Implement closeConnection() method.
-    }
-
-    public function create($data) {
-        // TODO: Implement create() method.
-    }
-
-    public function read($id) {
-        // TODO: Implement read() method.
-    }
-
-    public function update($id, $data) {
-        // TODO: Implement update() method.
-    }
-
-    public function delete($id) {
-        // TODO: Implement delete() method.
     }
     
 }
