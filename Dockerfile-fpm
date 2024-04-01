@@ -1,0 +1,11 @@
+FROM php:8.3-fpm
+    
+RUN apt-get update && \
+    apt-get install -y cmake && \
+    apt-get install -y gcc g++ make cmake libssl-dev zlib1g-dev && \
+    apt-get install -y git && \
+    pecl install couchbase
+
+RUN echo 'extension=couchbase.so' >> /usr/local/etc/php/php.ini-development \
+    && echo 'extension=couchbase.so' >> /usr/local/etc/php/php.ini-production \
+	&& echo 'extension=couchbase.so' >> /usr/local/etc/php/conf.d/docker-fpm.ini
