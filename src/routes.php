@@ -120,7 +120,8 @@ $app->get('/api/v1/leaderboard/daily', function (Request $request, Response $res
 });
 
 $app->get('/api/v1/score/{score_id}', function (Request $request, Response $response, $args) {
-    $score_id = $args['score_id'];
+    $score_id = trim($args['score_id']);
+    $score_id = str_replace(array("\n", "\r"), '', $score_id);
     $couchbase = new CouchbaseConnection();
     $scoresCollection=$couchbase->getCollection('scores');//get tanks collection
     if($scoresCollection->exists($score_id)->exists()){//check if score exists

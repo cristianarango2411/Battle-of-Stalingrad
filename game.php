@@ -52,6 +52,14 @@ function getScore(&$client, $baseURL){
 
     $response = makeRequest($client,'GET', $baseURL.'score/'.$scoreID);
 
+    if($response->getStatusCode() == 200){
+        $jsonResponse=$response->getBody()->getContents();
+        fwrite(STDOUT, $jsonResponse."\n");
+    }else{
+        fwrite(STDOUT, "\nError: We can't connet to the API\n");
+        die();
+    }
+
 }
 
 function leaderboards(&$client, $baseURL, $type = 'General'){
