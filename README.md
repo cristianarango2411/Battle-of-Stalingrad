@@ -1,6 +1,6 @@
-# Project Name
+# Battle of Stalingrad
 
-Battle of Stalingrad
+mini game (text format) that emulates a turn-based battle of Stalingrad between the two tanks.
 
 ## Prerequisites
 
